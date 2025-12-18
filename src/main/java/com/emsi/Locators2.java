@@ -29,7 +29,7 @@ public class Locators2 {
 
 // WebDriver driver = new EdgeDriver();
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
 
         String password = getPassword(driver);
 
