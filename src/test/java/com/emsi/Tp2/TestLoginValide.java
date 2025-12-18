@@ -83,18 +83,16 @@ public class TestLoginValide {
             // Wait for the message to contain text (JavaScript needs time to execute)
             wait.until(ExpectedConditions.textToBePresentInElement(messageElement, "Connexion"));
 
-            // Get the message text and CSS class
+            // Get the message text and color
             String messageText = messageElement.getText();
-            String cssClass = messageElement.getAttribute("class");
             String messageColor = messageElement.getCssValue("color");
 
             System.out.println("   ✓ Message : " + messageText);
-            System.out.println("   ✓ Classe CSS : " + cssClass);
 
             // Assertions
             assertNotNull(messageText, "Le message ne doit pas être null");
             assertFalse(messageText.isEmpty(), "Le message ne doit pas être vide");
-            assertTrue(messageText.contains("réussie") || messageText.contains("Connexion réussie"), 
+            assertTrue(messageText.contains("Connexion réussie"), 
                       "Le message doit indiquer une connexion réussie");
             
             // Verify the color is green (can be in different formats)
@@ -146,7 +144,7 @@ public class TestLoginValide {
             // Assertions
             assertNotNull(messageText, "Le message ne doit pas être null");
             assertFalse(messageText.isEmpty(), "Le message ne doit pas être vide");
-            assertTrue(messageText.contains("incorrect") || messageText.contains("Nom d'utilisateur ou mot de passe incorrect"), 
+            assertTrue(messageText.contains("Nom d'utilisateur ou mot de passe incorrect"), 
                       "Le message doit indiquer une erreur de connexion");
             
             // Verify the color is red
