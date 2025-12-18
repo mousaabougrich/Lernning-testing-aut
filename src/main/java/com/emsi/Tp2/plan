@@ -1,0 +1,209 @@
+# Plan de Test - Fonctionnalité de Recherche Google
+
+## 1. Objet du test
+Valider la fonctionnalité de recherche sur la page d'accueil de Google et vérifier que tous les scénarios utilisateur fonctionnent correctement.
+
+## 2. Portée du test
+
+### Tests inclus :
+- ✅ Recherche avec mot clé valide
+- ✅ Recherche avec champ vide
+- ✅ Recherche avec caractères spéciaux
+- ✅ Recherche avec longue chaîne de caractères
+- ✅ Navigation vers les images
+- ✅ Suggestions de recherche (auto-complétion)
+- ✅ Bouton "J'ai de la chance"
+- ✅ Recherche vocale (si disponible)
+
+### Tests exclus :
+- ❌ Tests de performance
+- ❌ Tests de sécurité avancés
+- ❌ Tests multi-navigateurs (focus sur Chrome)
+
+## 3. Environnement de test
+
+| Composant | Spécification |
+|-----------|---------------|
+| **Navigateur** | Chrome 131+ |
+| **OS** | Windows 10/11 |
+| **Java** | JDK 17 |
+| **Selenium** | 4.25.0 |
+| **Framework** | JUnit 5.10.1 |
+| **Build Tool** | Maven 3.9+ |
+
+## 4. Critères d'acceptation
+
+### Critères de succès :
+1. Les résultats s'affichent pour une recherche valide (< 3 secondes)
+2. La barre de recherche accepte tous types de caractères
+3. Le titre de la page contient le mot-clé recherché
+4. Minimum 5 résultats affichés pour une recherche valide
+5. Comportement cohérent pour les cas limites
+
+### Critères d'échec :
+1. Erreur 404 ou 500
+2. Temps de réponse > 10 secondes
+3. Aucun résultat pour mot-clé valide
+4. Crash du navigateur
+
+## 5. Risques identifiés
+
+| Risque | Probabilité | Impact | Mitigation |
+|--------|-------------|--------|------------|
+| **CAPTCHA Google** | Haute | Élevé | Configuration anti-détection, délais |
+| **Changement UI Google** | Moyenne | Élevé | Utiliser des sélecteurs robustes |
+| **Problème réseau** | Faible | Moyen | Timeouts appropriés, retry logic |
+| **Version Chrome incompatible** | Faible | Élevé | WebDriverManager auto-update |
+
+## 6. Hypothèses
+
+1. Connexion Internet stable disponible
+2. Google.com accessible depuis le pays de test
+3. Pas de proxy bloquant
+4. ChromeDriver compatible installé
+5. Permissions d'exécution disponibles
+
+## 7. Scénarios de test
+
+### **Scénario 1 : Recherche simple avec mot-clé valide**
+- **Objectif** : Vérifier qu'une recherche basique fonctionne
+- **Pré-condition** : Page Google ouverte
+- **Étapes** : Saisir "Selenium", soumettre
+- **Résultat attendu** : Résultats affichés, titre contient "Selenium"
+
+### **Scénario 2 : Champ de recherche vide**
+- **Objectif** : Vérifier le comportement avec champ vide
+- **Pré-condition** : Page Google ouverte
+- **Étapes** : Soumettre sans saisir de texte
+- **Résultat attendu** : Reste sur la page d'accueil ou message
+
+### **Scénario 3 : Longue chaîne de caractères**
+- **Objectif** : Tester la limite de saisie
+- **Pré-condition** : Page Google ouverte
+- **Étapes** : Saisir 500 caractères, soumettre
+- **Résultat attendu** : Recherche effectuée ou troncature
+
+### **Scénario 4 : Caractères spéciaux**
+- **Objectif** : Vérifier la gestion des caractères spéciaux
+- **Pré-condition** : Page Google ouverte
+- **Étapes** : Saisir "@#$%&*", soumettre
+- **Résultat attendu** : Résultats ou message approprié
+
+### **Scénario 5 : Navigation vers Images**
+- **Objectif** : Vérifier la navigation vers la recherche d'images
+- **Pré-condition** : Page Google ouverte
+- **Étapes** : Cliquer sur "Images", effectuer recherche
+- **Résultat attendu** : Page images.google.com affichée
+
+### **Scénario 6 : Suggestions de recherche**
+- **Objectif** : Vérifier l'auto-complétion
+- **Pré-condition** : Page Google ouverte
+- **Étapes** : Saisir "Selen" progressivement
+- **Résultat attendu** : Liste de suggestions apparaît
+
+### **Scénario 7 : Bouton "J'ai de la chance"**
+- **Objectif** : Vérifier la redirection directe
+- **Pré-condition** : Page Google ouverte
+- **Étapes** : Saisir "Wikipedia", cliquer "J'ai de la chance"
+- **Résultat attendu** : Redirection vers le premier résultat
+
+## 8. Cas de test détaillés
+
+### **TC-001 : Recherche simple**
+| Champ | Valeur |
+|-------|--------|
+| **ID** | TC-001 |
+| **Titre** | Recherche avec mot-clé unique valide |
+| **Priorité** | Haute |
+| **Pré-conditions** | Navigateur ouvert sur google.com |
+| **Données test** | "Selenium WebDriver" |
+| **Étapes** | 1. Localiser barre recherche<br>2. Saisir "Selenium WebDriver"<br>3. Appuyer sur Entrée |
+| **Résultat attendu** | - Page résultats chargée<br>- Titre contient "Selenium WebDriver"<br>- Au moins 5 résultats visibles |
+| **Statut** | ✅ À automatiser |
+
+### **TC-002 : Champ vide**
+| Champ | Valeur |
+|-------|--------|
+| **ID** | TC-002 |
+| **Titre** | Soumission avec champ vide |
+| **Priorité** | Moyenne |
+| **Pré-conditions** | Navigateur ouvert sur google.com |
+| **Données test** | "" (chaîne vide) |
+| **Étapes** | 1. Localiser barre recherche<br>2. Ne rien saisir<br>3. Appuyer sur Entrée |
+| **Résultat attendu** | - Reste sur page d'accueil OU<br>- Message d'erreur approprié |
+| **Statut** | ✅ À automatiser |
+
+### **TC-003 : Longue chaîne**
+| Champ | Valeur |
+|-------|--------|
+| **ID** | TC-003 |
+| **Titre** | Recherche avec 500 caractères |
+| **Priorité** | Basse |
+| **Pré-conditions** | Navigateur ouvert sur google.com |
+| **Données test** | Chaîne de 500 caractères |
+| **Étapes** | 1. Générer chaîne 500 char<br>2. Saisir dans barre<br>3. Soumettre |
+| **Résultat attendu** | - Recherche effectuée OU<br>- Troncature visible |
+| **Statut** | ✅ À automatiser |
+
+### **TC-004 : Caractères spéciaux**
+| Champ | Valeur |
+|-------|--------|
+| **ID** | TC-004 |
+| **Titre** | Recherche avec caractères spéciaux |
+| **Priorité** | Moyenne |
+| **Pré-conditions** | Navigateur ouvert sur google.com |
+| **Données test** | "@#$%^&*()[]{}!?" |
+| **Étapes** | 1. Saisir caractères spéciaux<br>2. Soumettre recherche |
+| **Résultat attendu** | - Résultats affichés OU<br>- Message approprié |
+| **Statut** | ✅ À automatiser |
+
+### **TC-005 : Navigation Images**
+| Champ | Valeur |
+|-------|--------|
+| **ID** | TC-005 |
+| **Titre** | Recherche d'images |
+| **Priorité** | Haute |
+| **Pré-conditions** | Navigateur ouvert sur google.com |
+| **Données test** | "Nature" |
+| **Étapes** | 1. Cliquer lien "Images"<br>2. Saisir "Nature"<br>3. Soumettre |
+| **Résultat attendu** | - URL contient "images.google"<br>- Images affichées |
+| **Statut** | ✅ À automatiser |
+
+### **TC-006 : Suggestions automatiques**
+| Champ | Valeur |
+|-------|--------|
+| **ID** | TC-006 |
+| **Titre** | Vérification auto-complétion |
+| **Priorité** | Moyenne |
+| **Pré-conditions** | Navigateur ouvert sur google.com |
+| **Données test** | "Selen" |
+| **Étapes** | 1. Saisir "Selen" progressivement<br>2. Attendre suggestions |
+| **Résultat attendu** | - Dropdown suggestionvvisible<br>- Contient "Selenium" |
+| **Statut** | ✅ À automatiser |
+
+### **TC-007 : Bouton "J'ai de la chance"**
+| Champ | Valeur |
+|-------|--------|
+| **ID** | TC-007 |
+| **Titre** | Test redirection directe |
+| **Priorité** | Basse |
+| **Pré-conditions** | Navigateur ouvert sur google.com |
+| **Données test** | "Wikipedia" |
+| **Étapes** | 1. Saisir "Wikipedia"<br>2. Cliquer "J'ai de la chance" |
+| **Résultat attendu** | - Redirection vers wikipedia.org<br>- Pas de page résultats |
+| **Statut** | ✅ À automatiser |
+
+## 9. Métriques de test
+
+- **Nombre total de cas** : 7
+- **Priorité Haute** : 3
+- **Priorité Moyenne** : 3
+- **Priorité Basse** : 1
+- **Couverture estimée** : 85%
+
+## 10. Livrables
+
+1. ✅ Ce plan de test
+2. ✅ Code source des tests automatisés
+3. ✅ Rapport d'exécution JUnit
+4. ✅ Documentation technique
